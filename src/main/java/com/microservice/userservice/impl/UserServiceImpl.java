@@ -1,8 +1,7 @@
 package com.microservice.userservice.impl;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.microservice.userservice.Interface.UserServiceInterface;
+import com.microservice.userservice.entity.Hotel;
 import com.microservice.userservice.entity.Rating;
 import com.microservice.userservice.entity.User;
 import com.microservice.userservice.exception.ResourceNotFoundException;
@@ -42,9 +42,21 @@ public class UserServiceImpl implements UserServiceInterface {
 	@Override
 	public User getSingleUser(String id) {
 		User user =  userServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException()) ;
-		ResponseEntity<List<Rating>> rating = restTemplate.exchange("http://localhost:8088/ratingService/getRatingsByUserId/" + user.getUserId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Rating>>() {});
+		ResponseEntity<List<Rating>> ratingResponse = restTemplate.exchange("http://localhost:8088/ratingService/getRatingsByUserId/" + user.getUserId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Rating>>() {});
 		
-		user.setRate(rating.getBody());		
+		List<Rating> ratings = ratingResponse.getBody();
+		
+		ratings.stream().map(rating ->{
+			ResponseEntity<Hotel> hotels = restTemplate.getForEntity("http://localhost:8087/hotelService/getHotelById/" + rating.getHotelId() , Hotel.class);
+			Hotel hotel = hotels.getBody();
+			rating.setHotel(hotel);
+			
+			return rating;
+		}).collect(Collectors.toList()) ;
+		
+		
+		
+		user.setRate(ratings);	
 		return user;
 	}
 
