@@ -1,9 +1,12 @@
 package com.microservice.userservice.exception;
 
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-
 public class ResourceNotFoundException extends RuntimeException {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ResourceNotFoundException() {
 		super("Resource not found on server !!");
 	}

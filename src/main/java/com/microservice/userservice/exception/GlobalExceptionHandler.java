@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.microservice.userservice.Payload.ApiResponse;
 
-import lombok.experimental.StandardException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
