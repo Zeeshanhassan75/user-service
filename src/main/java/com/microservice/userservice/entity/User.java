@@ -1,8 +1,11 @@
 package com.microservice.userservice.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +35,9 @@ public class User {
 
     @Column(name = "ABOUT")
     private String about;
+    
+	@Transient
+	private List<Rating> rate;
     
 }
 
