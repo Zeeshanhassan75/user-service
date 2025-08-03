@@ -24,3 +24,7 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8090/eureka
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG

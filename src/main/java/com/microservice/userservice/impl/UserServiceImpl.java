@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserServiceInterface {
 	@Override
 	public User getSingleUser(String id) {
 		User user =  userServiceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException()) ;
-		ResponseEntity<List<Rating>> ratingResponse = restTemplate.exchange("http://localhost:8088/ratingService/getRatingsByUserId/" + user.getUserId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Rating>>() {});
+		ResponseEntity<List<Rating>> ratingResponse = restTemplate.exchange("http://RATING-SERVICE/ratingService/getRatingsByUserId/" + user.getUserId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Rating>>() {});
 		
 		List<Rating> ratings = ratingResponse.getBody();
 		
 		ratings.stream().map(rating ->{
-			ResponseEntity<Hotel> hotels = restTemplate.getForEntity("http://localhost:8087/hotelService/getHotelById/" + rating.getHotelId() , Hotel.class);
+			ResponseEntity<Hotel> hotels = restTemplate.getForEntity("http://HOTEL-SERVICE/hotelService/getHotelById/" + rating.getHotelId() , Hotel.class);
 			Hotel hotel = hotels.getBody();
 			rating.setHotel(hotel);
 			
