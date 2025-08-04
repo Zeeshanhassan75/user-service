@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.microservice.userservice.External.Service.HotelService;
 import com.microservice.userservice.Interface.UserServiceInterface;
 import com.microservice.userservice.entity.Hotel;
 import com.microservice.userservice.entity.Rating;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserServiceInterface {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	HotelService hotelService;
 	
 	@Override
 	public User createUser(User user) {
@@ -47,8 +51,15 @@ public class UserServiceImpl implements UserServiceInterface {
 		List<Rating> ratings = ratingResponse.getBody();
 		
 		ratings.stream().map(rating ->{
+			
+			/*Calling Hotel Service through Rest Call
 			ResponseEntity<Hotel> hotels = restTemplate.getForEntity("http://HOTEL-SERVICE/hotelService/getHotelById/" + rating.getHotelId() , Hotel.class);
-			Hotel hotel = hotels.getBody();
+			Hotel hotel = hotels.getBody();*/
+			
+			
+			//Calling Hotel Service through Feign Client
+			Hotel hotel  = hotelService.getHotel(rating.getHotelId());
+			
 			rating.setHotel(hotel);
 			
 			return rating;
