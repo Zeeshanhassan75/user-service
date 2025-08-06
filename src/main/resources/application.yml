@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/Microservices
+    url: jdbc:mysql://localhost:3307/Microservices
     username: root
     driver-class-name: com.mysql.jdbc.Driver
 
