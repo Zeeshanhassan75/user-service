@@ -2,6 +2,9 @@ server:
   port: 8086
 
 spring:
+  application:
+    name: USER-SERVICE
+
   datasource:
     url: jdbc:mysql://localhost:3307/Microservices
     username: root
@@ -12,8 +15,11 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  application:
-    name: USER-SERVICE
+  profile:
+    active: test
+
+  config:
+    import: configserver:http://localhost:8092
 
 eureka:
   instance:
@@ -24,7 +30,3 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8090/eureka
-
-logging:
-  level:
-    org.springframework.web.client.RestTemplate: DEBUG
