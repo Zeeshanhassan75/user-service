@@ -15,18 +15,8 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  profile:
+  profiles:
     active: test
 
   config:
-    import: configserver:http://localhost:8092
-
-eureka:
-  instance:
-    prefer-ip-address: true
-
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8090/eureka
+    import: "configserver:http://localhost:8092"
